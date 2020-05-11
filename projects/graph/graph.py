@@ -102,7 +102,7 @@ class Graph:
 
         while len(nay) > 0:
             for n in nay:
-                if nay not in visited_vertices:
+                if n not in visited_vertices:
                     self.dft_recursive(nay, visited_vertices)
                 else:
                     return
@@ -113,7 +113,33 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        print("This is breadth-first search.")
+
+        path = Queue()
+
+        path.enqueue(starting_vertex)
+
+        visited = set()
+
+        while path.size() > 0:
+            c_path = path.dequeue()
+
+            c_path_last = c_path[-1]
+
+            if c_path_last not in visited:
+                if c_path_last == destination_vertex:
+                    return c_path
+            
+            else:
+                visited.add(c_path_last)
+                neighbours = self.get_neighbors(c_path_last)
+
+                for nay in neighbours:
+                    c_path_copy = c_path[:]
+                    c_path_copy.append(nay)
+
+                    path.enqueue(c_path_copy)
+                
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -121,7 +147,32 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        print("This is depth-first search.")
+
+        path = Stack()
+
+        path.push(starting_vertex)
+
+        visited = set()
+
+        while path.size() > 0:
+            c_path = path.pop()
+            c_path_last = c_path[-1]
+
+            if c_path_last not in visited:
+                if c_path_last == destination_vertex:
+                    return c_path
+                
+                else:
+                    visited.add(c_path_last)
+                    neighbours = self.get_neighbors(c_path_last)
+
+                    for nay in neighbours:
+                        c_path_copy = c_path[:]
+                        c_path_copy.append(nay)
+
+                        path.push(c_path_copy)
+
 
     def dfs_recursive(self, starting_vertex, destination_vertex):
         """
