@@ -1,3 +1,6 @@
+from random import shuffle
+from util import Stack, Queue
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -42,11 +45,20 @@ class SocialGraph:
         self.last_id = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
 
         # Add users
+        for user in range(num_users):
+            self.add_user(f'user{user}')
 
         # Create friendships
+        for index in self.users:
+            users = [u for u in self.users.keys() if u != index]
+            shuffle(users)
+            friendship = users[:avg_friendships]
+            for friend in friendship:
+                if friend not in self.friendships[index]:
+                    self.add_friendship(index, friend)
+
 
     def get_all_social_paths(self, user_id):
         """
@@ -58,7 +70,16 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+        s = Queue()
+        s.enqueue([user_id])
+        while s.size():
+            path = s.dequeue()
+            curr_friend = path[-1]
+            if curr_friend not in visited:
+                visited[curr_friend] = path
+                for friend in self.friendships[curr_friend]:
+                    s.enqueue(list(path) + [friend])
+
         return visited
 
 
